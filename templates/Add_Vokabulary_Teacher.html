@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block title %}Verify{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css')}}">
+    <script src="/static/js/Add_Vokabulary_Teacher.js"></script>
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+</body>
+
+
+<div class="content-section">
+    <form method="POST" action="/AddAssignment" enctype="multipart/form-data">
+     
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Add Assignment</legend>
+            <div class="form-group">
+                <label for="nameOfAssignment" style="color:white;">Assignment Name</label>
+                <input autocomplete="off" type="text" class="form-control" id="nameOfAssignment" name="nameOfAssignment" placeholder="Enter the Name of the Assignment"/>
+            </div>
+            <div class="form-group">
+                <label for="firstLanguage" style="color:white;">What is the first Language?</label>
+                <input autocomplete="off" type="text" class="form-control" id="firstLanguage" name="firstLanguage" placeholder="Enter the first Language" onchange="FirstLanguageChaged(this.value, this)"/>
+            </div>
+            <div class="form-group">
+                <label for="secondLanguage" style="color:white;">What is the second Language?</label>
+                <input autocomplete="off" type="text" class="form-control" id="secondLanguage" name="secondLanguage" placeholder="Enter the second Language" onchange="SecondLanguageChaged(this.value)"/>
+            </div>
+            <div class="form-group">
+                <label for="indexOfVokabulary" style="color:white;">How many Vokabularies?</label>
+                <input autocomplete="off" type="number" class="form-control" id="indexOfVokabulary" name="indexOfVokabulary" placeholder="Enter the number of Vokabularies" onchange="indexOfVokabularyChanged(this.value)"/>
+            </div>
+            
+            
+            <div id="vokabularysInputs"></div>
+        </fieldset>
+        <br />
+        <button style="margin-left: 50%; transform: translate(-50%, -50%); margin-top: 3%;" type="submit" class="neon-button">Add Assignment</button>
+    </form>
+</div>
+{% endblock %}

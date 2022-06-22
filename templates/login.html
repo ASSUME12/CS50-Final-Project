@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+</body>
+<form action="/login" method="POST">
+    <h3 align="center" style="color:white;">Login</h3>
+    <div class="form-group">
+        <label for="email" style="color:white;">Email Address</label>
+        <input autocomplete="on" type="email" class="form-control" id="email" name="email" placeholder="Enter email" />
+    </div>
+    <div class="form-group">
+        <label for="password" style="color:white;">Password</label>
+        <input autocomplete="off" type="password" class="form-control" id="password" name="password" placeholder="Enter password" />
+    </div>
+    <a href="/reset_password">Forgot Password</a>
+    <br />
+    <br />
+    <button type="submit" class="neon-button">Login</button>
+</form>
+{% endblock %}

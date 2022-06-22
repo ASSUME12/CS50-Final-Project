@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css')}}">
+    <script src="/static/js/TestMe.js"></script>
+
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+    <div class="content-section">
+        <fieldset class="form-group">
+            
+            <legend class="border-bottom mb-4"><h1>Result</h1></legend>
+            <br>
+            <h3>You got {{ correctAsnwersCount }} Vokabularies correct and {{ worngAsnwersCount }} Vokabularies wrong</>
+            <br>
+            <br>
+            <div class="sglspread">
+                <div class="text-holder left">
+                    <div class="pg1-2-txt">
+                        <span id="SecondLanguageSpan">Vokabulary</span>
+                    </div>
+                </div>
+                <div class="text-holder right">
+                    <div class="pg1-2-txt">
+                        <span id="FirstLanguageSpan">Your Answer</span>
+                    </div>
+                </div>
+            </div>
+            {% for Answer in AllAnswersWithResult %}
+            <input class="{{ Answer["result"] }}" type="text" value="{{ Answer["firstVokabulary"] }}" readonly>
+            <input class="{{ Answer["result"] }}" type="text" value="{{ Answer["secondVokabulary"] }}" readonly>
+            {% endfor %}
+
+            
+        </fieldset>
+        <button style="margin-left: 50%; transform: translate(-50%, -50%); margin-top: 3%;" type="submit" class="neon-button GoHomeButton" id="GoHomeButton" onclick="GoHome()">Go to the Homepage</button>
+
+        
+    </div>
+</body>
+
+
+{% endblock %}

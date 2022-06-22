@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block title %}Sign Up{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <script src="/static/js/sign_up.js"></script>
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+</body>
+<form action="/requestNewGroup" method="POST">
+    <h3 align="center" style="color:white;">Request to join a new Group</h3>
+    <div class="form-group" id="GroupnumberDiv">
+        <label for="groupNumber" style="color:white;">Group Number</label>
+        <input autocomplete="off" type="number" class="form-control" id="groupNumber" name="groupNumber" placeholder="Group Number" />
+    </div>
+    <br />
+    <button type="submit" class="neon-button">Request</button>
+</form>
+{% endblock %}

@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+input{
+    width: 45%;
+    margin: 4px 2px;
+    box-sizing: border-box;
+}
+
+.lang1{
+    width: 50%;
+    margin: 4px 2px;
+    box-sizing: border-box;
+}
+
+.lang2{
+    
+    width: 49%;
+    margin: 4px 2px;
+    box-sizing: border-box;
+}
+
+
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+div.sglspread {
+
+    margin:0 auto;
+    overflow:hidden;
+}
+.text-holder {
+    width:50%;
+}
+
+.left {
+    float:left;
+
+}
+
+.right {
+    float: right;
+}
+.pg1-2-txt {
+    width:80%;
+    text-align: center;
+
+
+    padding:1em;
+    font-size: larger;
+
+}
+
+.TestMeLanguage{
+    width:100%;
+    text-align: center;
+
+
+    padding:1em;
+    font-size: larger;
+}
+
+#close_button1_span{
+    color: white;
+}
+
+
+.Assignment{
+    font-size: 2rem;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--clr-neon);
+    border: var(--clr-neon) 0.125em solid;
+    padding: 0.25em 1em;
+    border-radius: 10em;
+    text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em currentColor;
+    box-shadow: inset 0 0 0.5em 0 var(--clr-neon), 0 0 0.5em 0 var(--clr-neon);
+    position: relative;
+    width: 100%;
+    margin: 1rem;
+}
+
+h1, h3{
+    text-align: center;
+
+}
+
+.nameOfAssignment{
+    padding: 20px 0;
+}
+
+.AssignmentButton{
+    position: relative;
+    float: right;
+    margin-top: -5.5rem;
+}
+
+.wrong, select, textarea{
+    background: red;
+    color: white;
+}
+
+.correct, select, textarea{
+    background: green;
+    color: white;
+}
+
+.AlreadyDid::after{
+    content: "\2713";
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    left: 95%;
+    top: -15px;
+    font-size: 30px;
+    background-color: green;
+    border-radius: 50%;
+    text-align: center;
+    color: aliceblue;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+
+  
+
+

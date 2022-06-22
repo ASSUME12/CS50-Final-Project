@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css')}}">
+    <script src="/static/js/GoToAssignment.js"></script>
+   
+
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+    <div class="AssignmentHolder">
+        <h1>Assignment</h1>
+        <br>
+        {% for Assignment in Assignments %}
+        <div class="Assignment">
+            <p class="nameOfAssignment">{{ Assignment["name"] }}</p>
+            {% if Assignment["AlreadyDid"] == "True" %}
+            <div class="AlreadyDid"></div>
+            {% endif %}
+            <button type="button" class="AssignmentButton neon-button-Assignment" id="{{ Assignment["tableName"] }}" onclick="GoToAssignment(this.id)">Test Me</button>
+            
+        </div>
+        <br>
+        {% endfor  %}
+    </div>
+</body>
+
+{% endblock %}

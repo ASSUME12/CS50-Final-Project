@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block title %}Sign Up{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <script src="/static/js/sign_up.js"></script>
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+</body>
+<form action="/sign-up" method="POST">
+    <h3 align="center" style="color:white;">Sign Up</h3>
+    <div class="form-group">
+        <label for="email" style="color:white;">Email Address</label>
+        <input autocomplete="on" type="email" class="form-control" id="email" name="email" placeholder="Enter email" />
+    </div>
+    <div class="form-group">
+        <label for="username" style="color:white;">Username</label>
+        <input autocomplete="off" type="text" class="form-control" id="username" name="username" placeholder="Enter Username" />
+    </div>
+    <div class="form-group">
+        <label for="password1" style="color:white;">Password</label>
+        <input autocomplete="off" type="password" class="form-control" id="password" name="password" placeholder="Enter password" />
+    </div>
+    <div class="form-group">
+        <label for="password2" style="color:white;">Password (Confirm)</label>
+        <input autocomplete="off" type="password" class="form-control" id="confirmation" name="confirmation" placeholder="Confirm password" />
+    </div>
+    
+    <div id="school_grade">
+        <div class="form-group">
+            <label for="school" style="color:white;">School</label>
+            <input autocomplete="off" type="text" class="form-control" id="school" name="school" placeholder="school"/>
+        </div>
+        <div class="form-group">
+            <label for="class" style="color:white;">Class</label>
+            <input autocomplete="off" type="number" class="form-control" id="class" name="class" placeholder="Class"/>
+        </div>
+    </div>
+    <div class="role">
+        <label for="password2" style="color:white;">Role</label>
+        <br />
+        <select id="select" name="select" onchange="SelectChanged(this.value)"">  
+        <option value = "Student">Student</option>
+        <option value = "Teacher">Teacher</option>
+        </select>
+    </div>
+    <br />
+    <div class="form-group" id="GroupnumberDiv">
+        <label for="groupNumber" style="color:white;">Group Number</label>
+        <input autocomplete="off" type="number" class="form-control" id="groupNumber" name="groupNumber" placeholder="Group Number" />
+    </div>
+    <br />
+    <button type="submit" class="neon-button">Sign Up</button>
+</form>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Verify{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <script src="/static/js/TestMe.js"></script>
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+</body>
+
+
+<div class="content-section">
+    <div class="media">
+        <img class="rounded-circle account-img" src="{{ image_file }}">
+        <div class="media-body">
+            <h2 class="account-heading username-text">{{ username }}</h2>
+            <p class="text-secondary email-text">{{ email }}</p>
+            <p class="text-secondary email-text">{{ grade }}</p>
+            <p class="text-secondary email-text">{{ role }}</p>
+            <p class="text-secondary email-text">{{ groupNumber }}</p>
+        </div>
+    </div>
+    <br />
+    <form method="POST" action="/profile" enctype="multipart/form-data">
+     
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Account Info</legend>
+            <div class="form-group">
+                <label for="email" style="color:white;">Email Address</label>
+                <input autocomplete="off" type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{ email }}"/>
+            </div>
+            <div class="form-group">
+                <label for="username" style="color:white;">Username</label>
+                <input autocomplete="off" type="text" class="form-control" id="username" name="username" placeholder="Enter Username" value="{{ username }}"/>
+            </div>
+            <div class="form-group">
+                <label for="Image" style="color:white;">Profile Picture</label>
+                <input autocomplete="off" type="file" accept="image/*" id="Image" name="Image" placeholder="Select Image" "/>
+            </div>
+        </fieldset>
+        <br />
+        <button type="submit" class="neon-button">Change Account Info</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/members.css')}}">
+    <script src="/static/js/members.js"></script>
+
+</head>
+
+<body style="background-color: hsl(323 21% 16%);">
+    <div class="content-section">
+        <fieldset class="form-group">
+            
+            <legend class="border-bottom mb-4"><h1>Class Members</h1></legend>
+            
+            <div class="container">
+                {% for Member in Members %}
+                <div class="box">
+                    <div class="top-bar"></div>
+                    
+                    <div class="content">
+                        <img src="{{ Member["profile_pic"] }}" alt="">
+                        <strong>{{ Member["username"] }}</strong>
+                        <p>{{ Member["email"] }}</p>
+                    </div>
+                    <div class="btn">
+                        <a href="/{{ Member["username"] }}"><i class="fa fa-eye" aria-hidden="true"></i>View Profle</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if  navbar_data[0]["role"] =="Teacher"%}
+            <legend class="border-bottom mb-4"><h1>Members join requests</h1></legend>
+            <div class="container">
+                {% for Member in MembersQueue %}
+                <div class="box">
+                    <div class="top-bar"></div>
+                    
+                    <div class="content">
+                        <img src="{{ Member["profile_pic"] }}" alt="">
+                        <strong>{{ Member["username"] }}</strong>
+                        <p>{{ Member["email"] }}</p>
+                    </div>
+                    <div class="btn">
+                        <a href="/{{ Member["username"] }}"><i class="fa fa-eye" aria-hidden="true"></i>View Profle</a>
+                    </div>
+                    <form action="/AcceptUser" id="{{ Member["id"] }}AcceptForm" method="post">
+                        <div class="accept-div">
+                            <a  id="{{ Member["id"] }}" onclick="AcceptUser(this.id)" class="accept" name="accept" >Accept &#10004</a>
+                            <input id="{{ Member["id"] }}acceptInput" name="accept" style="visibility:hidden ; position: absolute; cursor: default;">
+                        </div>
+                    </form>
+                    <form action="/DeclineUser" id="{{ Member["id"] }}DeclineForm" method="post">
+                        <div class="decline-div">
+                            <a id="{{ Member["id"] }}" onclick="DeclineUser(this.id)" class="decline" name="">Decline &#10006</a>
+                            <input id="{{Member["id"]}}declineInput" name="decline" style="visibility:hidden ; position: absolute; cursor: default;">
+                        </div>
+                    </form>
+                    
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </fieldset>
+        
+        
+    </div>
+</body>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css')}}">
+    <script src="/static/js/TestMe.js"></script>
+
+</head>
+
+<body onload="AddVokabulariesInputs()" style="background-color: hsl(323 21% 16%);">
+    <div class="content-section">
+        <form action="/CheckAnswers" method="POST" enctype="multipart/form-data">
+         
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Fill out the meaning of the words</legend>
+                
+                
+                <div id="vokabularysInputs"></div>
+                <input style="visibility:hidden;" id="tableIdentidfier" name="tableIdentidfier" value="">
+            </fieldset>
+            <br />
+            <button style="margin-left: 50%; transform: translate(-50%, -50%); margin-top: 3%;" type="submit" class="neon-button">Check Answers</button>
+        </form>
+    </div>
+</body>
+
+{% endblock %}
