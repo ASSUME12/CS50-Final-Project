@@ -47,12 +47,12 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route('/git_update', methods=["POST"])
+@app.route('/git_update', methods=['POST'])
 def git_update():
-    repo = git.Repo('./CS50-Final-Project')
+    repo = git.Repo('./orbe')
     origin = repo.remotes.origin
     repo.create_head('main',
-    origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
+                     origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
     origin.pull()
     return '', 200
 
