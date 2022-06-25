@@ -49,12 +49,7 @@ def after_request(response):
 
 @app.rout('/git_update', method='POST')
 def git_update():
-    repo = git.Repo('./CS50-Final-Project')
-    origin = repo.remotes.origin
-    repo.create_head('main',
-    origin.refs.main).set_tracking_branch(origin.refs.main).checout()
-    origin.pull()
-    return '', 200
+    return render_template("index.html")
 
 @app.route("/")
 @login_required
