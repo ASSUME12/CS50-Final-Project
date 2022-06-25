@@ -13,6 +13,7 @@ from werkzeug.utils import secure_filename
 import uuid as uuid
 from PIL import Image
 from datetime import datetime
+import git
 now = datetime.now()
 # seed random number generator
 seed(1)
@@ -46,6 +47,14 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
+@app.rout('/git_update', method='POST')
+def git_update():
+    repo = git.Repo('./CS50-Final-Project')
+    origin = repo.remotes.origin
+    repo.create_head('main',
+    origin.refs.main).set_tracking_branch(origin.refs.main).checout()
+    origin.pull()
+    return '', 200
 
 @app.route("/")
 @login_required
