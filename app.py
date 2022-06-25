@@ -52,8 +52,7 @@ def after_request(response):
         if request.method == 'POST':
             repo = git.Repo('./CS50-Final-Project')
             origin = repo.remotes.origin
-            repo.create_head('master', 
-        origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
+            repo.create_head('master', origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
             origin.pull()
             return '', 200
         else:
