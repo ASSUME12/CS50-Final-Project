@@ -47,14 +47,17 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route('/git_update', methods=['POST'])
-def git_update():
-    repo = git.Repo('./CS50-Final-Project')
-    origin = repo.remotes.origin 
-    repo.create_head('main',
-                     origin.refs.main).set_tracking_branch(origin.refs.main).checkout()
-    origin.pull()
-    return '', 200
+@app.route('/webhook', methods=['POST'])
+    def webhook():
+        if request.method == 'POST':
+            repo = git.Repo('./CS50-Final-Project')
+            origin = repo.remotes.origin
+            repo.create_head('master', 
+        origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
+            origin.pull()
+            return '', 200
+        else:
+            return '', 400
 
 @app.route("/")
 @login_required
