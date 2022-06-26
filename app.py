@@ -47,16 +47,6 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    if request.method == 'POST':
-        repo = git.Repo('./CS50-Final-Project')
-        origin = repo.remotes.origin
-        repo.create_head('master', origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
-        origin.pull()
-        return '', 200
-    else:
-        return '', 400
 
 @app.route("/")
 @login_required
@@ -283,9 +273,10 @@ def AddAssignment():
 
             users = db.execute("SELECT * FROM users WHERE groupnumber = ?;", groupNumber)
 
-            for user in users:
-                if user["role"] != "Teacher":
-                    db.execute("INSERT INTO usersScores (userId, tableName, usersGroup, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid) VALUES(?, ?, ?, ?, ?, ?, ?);", user["id"], tableName, groupNumber, len(vokabularies), 0, 0, "False")
+            Students = db.execute("SELECT * FROM users WHERE role = ? AND groupNumber = ?","Student", groupNumber)
+            if len(Students) != 0:
+                for Student in Students:
+                    db.execute("INSERT INTO usersScores (userId, tableName, usersGroup, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid) VALUES(?, ?, ?, ?, ?, ?, ?);", Student["id"], tableName, groupNumber, 0, 0, 0, "False")
 
     navbar_data = get_navbar_data(session["user_id"])
     return render_template("Add_Vokabulary_Teacher.html", loggedIn="True", navbar_data=navbar_data)
@@ -305,18 +296,18 @@ def Progress():
     usersScore1 = db.execute("SELECT * FROM usersScores WHERE tableName = ?;", tableName) 
 
     usersScore2 = []
-
+    usersUsername = []
     for user in usersScore1:
         username = db.execute("SELECT * FROM users WHERE id = ?", user["userId"])
         user["username"] = username[0]["username"]
         user["vokabulariesTries"] = user["NumberOfvokabularies"] * user["usersTries"]
+        if not user["username"] in usersUsername:
+            usersUsername.append(user["username"])
         usersScore2.append(user)
 
     AssignmentName = db.execute("SELECT * FROM ?;",tableName)
-
-    print(AssignmentName)
     navbar_data = get_navbar_data(session["user_id"])
-    return render_template("Progress.html", loggedIn="True", usersScore=usersScore2, navbar_data=navbar_data, tableName=tableName, Assignment=AssignmentName[0]["nameOfAssignment"])
+    return render_template("Progress.html", loggedIn="True", usersScore=usersScore2, usersUsername=usersUsername, navbar_data=navbar_data, tableName=tableName, Assignment=AssignmentName[0]["nameOfAssignment"])
 
 @app.route('/getTestMeData', methods=['POST'])
 def getTestMeData():
@@ -383,15 +374,19 @@ def CheckAnswers():
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
     usersScore = db.execute("SELECT * FROM usersScores WHERE userId = ? AND tableName = ?;", session["user_id"],tableName)
     tries = 0
+
+    if len(usersScore) != 0:
+        tries = usersScore[len(usersScore) - 1]["usersTries"] + 1
+    else:
+        tries = 1
+    print(tries)
     
-    tries = usersScore[0]["usersTries"] + 1
   #  correctAsnwersCount = usersScore[0]["usersCorrectVokabularies"] + correctAsnwersCount
 
-
-    if tries > 1:
-        db.execute("INSERT INTO usersScores (userId, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid, tableName, usersGroup) VALUES (?, ?, ?, ?, ?, ?, ?);",session["user_id"], len(Answers), correctAsnwersCount, tries, "True", tableName, user[0]["groupNumber"])
-    else:
+    if tries == 1:
         db.execute("UPDATE usersScores SET NumberOfvokabularies = ?, usersCorrectVokabularies = ?, usersTries = ?, AlreadyDid = ? WHERE userId = ? AND tableName = ?;",len(Answers), correctAsnwersCount, tries, "True", session["user_id"], tableName)
+    else:
+        db.execute("INSERT INTO usersScores (userId, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid, tableName, usersGroup) VALUES (?, ?, ?, ?, ?, ?, ?);",session["user_id"], len(Answers), correctAsnwersCount, tries, "True", tableName, user[0]["groupNumber"])
     #userScores = db.execute("SELECT * FROM usersScores WHERE userId = ?")
 
 
@@ -430,6 +425,11 @@ def AcceptUser():
     formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
     db.execute("INSERT INTO notifications (userId, notificationTitle, notification, dateTime) VALUES (?, ?, ?, ?);", userID, notificationTitle, notification, formatted_date)
 
+    Assignments = db.execute("SELECT * FROM vokabulariesPlace WHERE vokabularysGroup = ?", groupNumber)
+    if len(Assignments) != 0:
+        for Assignment in Assignments:
+            db.execute("INSERT INTO usersScores (userId, tableName, usersGroup, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid) VALUES(?, ?, ?, ?, ?, ?, ?);", userID, Assignment["tableName"], groupNumber, 0, 0, 0, "False")
+    
     return redirect("/ClassMembers")
 
 @app.route('/DeclineUser', methods=['POST'])

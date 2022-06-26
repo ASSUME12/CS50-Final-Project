@@ -13,33 +13,47 @@
 </head>
 
 <div class="container-table100">
-    
+  <h1>Assignment {{ Assignment }}</h1>
+  <br>
     <div class="wrap-table100">
-        <h1>Assignment {{ Assignment }}</h1>
-        <br><br>
+        
       <div class="table100">
         <table>
-          <thead>
-            <tr class="table100-head">
-              <th class="column1">Student</th>
-              <th class="column2">Correct Vokabularies</th>
-              <th class="column3">Tries</th>
-              <th class="column4">Alread Did?</th>
-            </tr>
-          </thead>
           <tbody>
-              {%for Student in usersScore %}
-              {% if Student["usersTries"] < 2 %}
-                  <tr>
-                        <td class="column1">{{ Student["username"] }}</td>
+            <table>
+              {% for username in usersUsername %}
+              <table>
+                <tr id="{{ username }}" class="row" onclick="showRows(this.id)">
+                  <td class="column1">{{ username }}</td>
+                </tr>
+                
+                  <table style="left: 0px;">
+                    <tr class="table100-head {{ username }}2 seconderyTable">
+                      <th class="column2">Correct Vokabularies</th>
+                      <th class="column3">Attempt</th>
+                    </tr>
+                  {%for Student in usersScore %}
+                    {% if Student["username"] == username %}
+                    {% if Student["AlreadyDid"] == "True" %}
+                      <tr class="{{ Student["username"] }}2 seconderyTable">
                         <td class="column2">{{ Student["usersCorrectVokabularies"] }}/{{ Student["NumberOfvokabularies"] }}</td>
                         <td class="column3">{{ Student["usersTries"] }}</td>
-                        <td class="column4">{{ Student["AlreadyDid"] }}</td>
-                  </tr>
-            {% endif %}
 
-            {%endfor%}
+                      </tr>
+                    {% else %}
+                      <tr class="{{ Student["username"] }}2 seconderyTable">
+                        <td class="column2">The Student did not do the Assignment</td>
+                      </tr>
+                    {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </table>
+                
+              </table>
+              {% endfor %}
+            </table>
           </tbody>
+          
         </table>
       </div>
     </div>
