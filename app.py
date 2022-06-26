@@ -48,15 +48,15 @@ def after_request(response):
     return response
 
 @app.route('/webhook', methods=['POST'])
-    def webhook():
-        if request.method == 'POST':
-            repo = git.Repo('./CS50-Final-Project')
-            origin = repo.remotes.origin
-            repo.create_head('master', origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
-            origin.pull()
-            return '', 200
-        else:
-            return '', 400
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo('./CS50-Final-Project')
+        origin = repo.remotes.origin
+        repo.create_head('master', origin.refs.master).set_tracking_branch(origin.refs.master).checkout()
+        origin.pull()
+        return '', 200
+    else:
+        return '', 400
 
 @app.route("/")
 @login_required
@@ -296,6 +296,28 @@ def TestMe():
     navbar_data = get_navbar_data(session["user_id"])
     return render_template("TestMe.html", loggedIn="True", navbar_data=navbar_data)
 
+@app.route('/Progress', methods=['GET'])
+@login_required
+def Progress():
+
+    tableName = request.args.get("tableName")
+
+    usersScore1 = db.execute("SELECT * FROM usersScores WHERE tableName = ?;", tableName) 
+
+    usersScore2 = []
+
+    for user in usersScore1:
+        username = db.execute("SELECT * FROM users WHERE id = ?", user["userId"])
+        user["username"] = username[0]["username"]
+        user["vokabulariesTries"] = user["NumberOfvokabularies"] * user["usersTries"]
+        usersScore2.append(user)
+
+    AssignmentName = db.execute("SELECT * FROM ?;",tableName)
+
+    print(AssignmentName)
+    navbar_data = get_navbar_data(session["user_id"])
+    return render_template("Progress.html", loggedIn="True", usersScore=usersScore2, navbar_data=navbar_data, tableName=tableName, Assignment=AssignmentName[0]["nameOfAssignment"])
+
 @app.route('/getTestMeData', methods=['POST'])
 def getTestMeData():
     if request.method == "POST":
@@ -359,14 +381,17 @@ def CheckAnswers():
         index += 1
 
     user = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
-    usersTries = db.execute("SELECT * FROM usersScores WHERE userId = ?;", session["user_id"])
-    print(session["user_id"])
+    usersScore = db.execute("SELECT * FROM usersScores WHERE userId = ? AND tableName = ?;", session["user_id"],tableName)
     tries = 0
-    if usersTries[0]["usersTries"]:
-        tries = usersTries[0]["usersTries"] + 1
+    
+    tries = usersScore[0]["usersTries"] + 1
+  #  correctAsnwersCount = usersScore[0]["usersCorrectVokabularies"] + correctAsnwersCount
+
+
+    if tries > 1:
+        db.execute("INSERT INTO usersScores (userId, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid, tableName, usersGroup) VALUES (?, ?, ?, ?, ?, ?, ?);",session["user_id"], len(Answers), correctAsnwersCount, tries, "True", tableName, user[0]["groupNumber"])
     else:
-        tries = 1
-    db.execute("UPDATE usersScores SET NumberOfvokabularies = ?, usersCorrectVokabularies = ?, usersTries = ?, AlreadyDid = ? WHERE userId = ? AND tableName = ?;",len(Answers), correctAsnwersCount, tries, "True", session["user_id"], tableName)
+        db.execute("UPDATE usersScores SET NumberOfvokabularies = ?, usersCorrectVokabularies = ?, usersTries = ?, AlreadyDid = ? WHERE userId = ? AND tableName = ?;",len(Answers), correctAsnwersCount, tries, "True", session["user_id"], tableName)
     #userScores = db.execute("SELECT * FROM usersScores WHERE userId = ?")
 
 

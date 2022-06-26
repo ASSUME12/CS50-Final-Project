@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css')}}">
+    <script src="/static/js/Assignment.js"></script>
+   
+
+</head>
+
+<div class="container-table100">
+    
+    <div class="wrap-table100">
+        <h1>Assignment {{ Assignment }}</h1>
+        <br><br>
+      <div class="table100">
+        <table>
+          <thead>
+            <tr class="table100-head">
+              <th class="column1">Student</th>
+              <th class="column2">Correct Vokabularies</th>
+              <th class="column3">Tries</th>
+              <th class="column4">Alread Did?</th>
+            </tr>
+          </thead>
+          <tbody>
+              {%for Student in usersScore %}
+              {% if Student["usersTries"] < 2 %}
+                  <tr>
+                        <td class="column1">{{ Student["username"] }}</td>
+                        <td class="column2">{{ Student["usersCorrectVokabularies"] }}/{{ Student["NumberOfvokabularies"] }}</td>
+                        <td class="column3">{{ Student["usersTries"] }}</td>
+                        <td class="column4">{{ Student["AlreadyDid"] }}</td>
+                  </tr>
+            {% endif %}
+
+            {%endfor%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

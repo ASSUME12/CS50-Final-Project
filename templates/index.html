@@ -7,14 +7,14 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css')}}">
-    <script src="/static/js/GoToAssignment.js"></script>
+    <script src="/static/js/Assignment.js"></script>
    
 
 </head>
 
 <body style="background-color: hsl(323 21% 16%);">
     <div class="AssignmentHolder">
-        <h1>Helloooooooooooooo</h1>
+        <h1>Assignments</h1>
         <br>
         {% for Assignment in Assignments %}
         <div class="Assignment">
@@ -22,8 +22,11 @@
             {% if Assignment["AlreadyDid"] == "True" %}
             <div class="AlreadyDid"></div>
             {% endif %}
+            {% if navbar_data[0]["role"] == "Student" %}
             <button type="button" class="AssignmentButton neon-button-Assignment" id="{{ Assignment["tableName"] }}" onclick="GoToAssignment(this.id)">Test Me</button>
-            
+            {% else %}
+            <button type="button" class="AssignmentButton neon-button-Assignment" id="{{ Assignment["tableName"] }}" onclick="GoToProgress(this.id)">Show Progress</button>
+            {% endif %}
         </div>
         <br>
         {% endfor  %}
