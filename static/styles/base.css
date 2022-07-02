@@ -6,6 +6,9 @@
     padding: 0;
     font-family: 'Poppins', sans-serif;
 }
+.navbar-toggler{
+    z-index: 50;
+}
 
 .action{
     position: fixed;
@@ -439,3 +442,219 @@
 .search-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgb(70, 70, 70);
 }
+
+
+
+
+@media (max-width: 992px) {
+    .nav-item{
+        top: 20px;
+    }
+}
+
+@media (min-width: 300px) and (max-width: 400px) {
+    .search > .textbox {
+        width: 122px;
+    }  
+
+    .search-dropdown{
+        width: 170px;
+    }
+
+    .user_item{
+        width: 5px;
+        height: 60px;
+    }
+
+    .search-scrollbar{
+        max-height: 500px;
+        overflow: hidden;
+        overflow-y: scroll;
+        
+    }
+    
+    .search-scrollbar::-webkit-scrollbar {
+        width: 4px;
+        background: white;
+        border-radius: 8px 8px 8px 8px;
+    }
+
+    .user_info{
+        font-size: 2px;
+    }
+
+    .user_info span{
+        color: #f7f2b2;
+        font-weight: 400;
+        font-size: 10px;
+        display: block;
+    }
+    
+    .user_info a p{
+        color: #ff4800;
+        font-weight: 400;
+        font-size: 10px;
+    
+        
+    }
+
+    .search{
+        top: 5px;
+    }
+    
+} 
+@media (min-width: 400px) and (max-width: 450px) {
+    .search > .textbox {
+        width: 122px;
+    }  
+
+    .search-dropdown{
+        width: 170px;
+    }
+
+    .user_item{
+        width: 5px;
+        height: 60px;
+    }
+
+    .search-scrollbar{
+        max-height: 500px;
+        overflow: hidden;
+        overflow-y: scroll;
+        
+    }
+    
+    .search-scrollbar::-webkit-scrollbar {
+        width: 4px;
+        background: white;
+        border-radius: 8px 8px 8px 8px;
+    }
+
+    .user_info{
+        font-size: 2px;
+    }
+
+    .user_info span{
+        color: #f7f2b2;
+        font-weight: 400;
+        font-size: 10px;
+        display: block;
+    }
+    
+    .user_info a p{
+        color: #ff4800;
+        font-weight: 400;
+        font-size: 10px;
+    
+        
+    }
+
+    .search{
+        top: 5px;
+    }
+    
+} 
+
+@media (min-width: 450px)  and (max-width: 992px){
+    .search > .textbox {
+        width: 200px;
+    }  
+
+    .search-dropdown{
+        width: 245px;
+    }
+
+    .user_item{
+        width: 5px;
+        height: 60px;
+    }
+
+    .search-scrollbar{
+        max-height: 500px;
+        overflow: hidden;
+        overflow-y: scroll;
+        
+    }
+    
+    .search-scrollbar::-webkit-scrollbar {
+        width: 4px;
+        background: white;
+        border-radius: 8px 8px 8px 8px;
+    }
+
+    .user_info{
+        font-size: 2px;
+    }
+
+    .user_info span{
+        color: #f7f2b2;
+        font-weight: 400;
+        font-size: 10px;
+        display: block;
+    }
+    
+    .user_info a p{
+        color: #ff4800;
+        font-weight: 400;
+        font-size: 10px;
+    
+        
+    }
+
+    .search{
+        top: 5px;
+    }
+    
+} 
+
+@media (max-width: 370px){
+    .search > .textbox {
+        width: 75px;
+    }  
+
+    .search-dropdown{
+        width: 120px;
+    }
+
+    .user_item{
+        width: 5px;
+        height: 60px;
+    }
+
+    .search-scrollbar{
+        max-height: 500px;
+        overflow: hidden;
+        overflow-y: scroll;
+        
+    }
+    
+    .search-scrollbar::-webkit-scrollbar {
+        width: 4px;
+        background: white;
+        border-radius: 8px 8px 8px 8px;
+    }
+
+    .user_info{
+        font-size: 2px;
+    }
+
+    .user_info span{
+        color: #f7f2b2;
+        font-weight: 400;
+        font-size: 10px;
+        display: block;
+    }
+    
+    .user_info a p{
+        color: #ff4800;
+        font-weight: 400;
+        font-size: 10px;
+    
+        
+    }
+
+    .search{
+        top: 5px;
+    }
+    
+} 
