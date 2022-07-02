@@ -28,10 +28,16 @@
                 </tr>
                 
                   <table style="left: 0px;">
-                    <tr class="table100-head {{ username }}2 seconderyTable">
-                      <th class="column2">Correct Vokabularies</th>
-                      <th class="column3">Attempt</th>
-                    </tr>
+                    {%for Student in usersScore %}
+                      {% if Student["username"] == username %}
+                        {% if Student["AlreadyDid"] == "True" %}
+                          <tr class="table100-head {{ username }}2 seconderyTable">
+                            <th class="column2">Correct Vokabularies</th>
+                            <th class="column3">Attempt</th>
+                          </tr>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
                   {%for Student in usersScore %}
                     {% if Student["username"] == username %}
                     {% if Student["AlreadyDid"] == "True" %}

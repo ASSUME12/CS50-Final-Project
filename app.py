@@ -297,6 +297,7 @@ def Progress():
 
     usersScore2 = []
     usersUsername = []
+    
     for user in usersScore1:
         username = db.execute("SELECT * FROM users WHERE id = ?", user["userId"])
         user["username"] = username[0]["username"]
@@ -425,10 +426,10 @@ def AcceptUser():
     formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
     db.execute("INSERT INTO notifications (userId, notificationTitle, notification, dateTime) VALUES (?, ?, ?, ?);", userID, notificationTitle, notification, formatted_date)
 
-    Assignments = db.execute("SELECT * FROM vokabulariesPlace WHERE vokabularysGroup = ?", groupNumber)
+    Assignments = db.execute("SELECT * FROM vokabulariesPlace WHERE vokabularysGroup = ?;", groupNumber[0]["groupToJoin"])
     if len(Assignments) != 0:
         for Assignment in Assignments:
-            db.execute("INSERT INTO usersScores (userId, tableName, usersGroup, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid) VALUES(?, ?, ?, ?, ?, ?, ?);", userID, Assignment["tableName"], groupNumber, 0, 0, 0, "False")
+            db.execute("INSERT INTO usersScores (userId, tableName, usersGroup, NumberOfvokabularies, usersCorrectVokabularies, usersTries, AlreadyDid) VALUES(?, ?, ?, ?, ?, ?, ?);", userID, Assignment["tableName"], groupNumber[0]["groupToJoin"], 0, 0, 0, "False")
     
     return redirect("/ClassMembers")
 
@@ -547,15 +548,22 @@ def searchForUsers():
 @app.route('/test', methods=['GET'])
 @login_required
 def test():
-    x = db.execute("SELECT * FROM vokabulariesPlace;")
+    session.clear()
+    db.execute("DROP TABLE users;")
 
-    for y in x:
-        db.execute("DROP TABLE ?;", y["tableName"])
+    vokabulariesPlace = db.execute("SELECT * FROM vokabulariesPlace;")
 
-    for y in range(len(x)):
-        db.execute("DELETE FROM vokabulariesPlace WHERE tableName = ?;", x[y]["tableName"])
-
-    for y in range(len(x)):
-        db.execute("DELETE FROM  usersScores WHERE tableName = ?;", x[y]["tableName"])
+    for vokabulary in vokabulariesPlace:
+        db.execute("DROP TABLE ?;", vokabulary["tableName"])
     
+    db.execute("DROP TABLE vokabulariesPlace;")
+    db.execute("DROP TABLE joinGroupQueue;")
+    db.execute("DROP TABLE notifications;")
+    db.execute("DROP TABLE usersScores;")
+
+    db.execute("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL, school TEXT NOT NULL, grade TEXT NOT NULL, profile_pic TEXT NOT NULL, groupNumber INTEGER NOT NULL);")
+    db.execute("CREATE TABLE vokabulariesPlace (vokabularysId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, tableName INTEGER NOT NULL UNIQUE, vokabularysGroup INTEGER NOT NULL, dateTime DATETIME);")
+    db.execute("CREATE TABLE joinGroupQueue (queueID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userUsername INTEGER NOT NULL UNIQUE, groupToJoin INTEGER NOT NULL);")
+    db.execute("CREATE TABLE notifications (notificationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userId INTEGER NOT NULL, notificationTitle TEXT NOT NULL, notification TEXT NOT NULL, dateTime DATETIME, AlreadyRead TEXT NOT NULL DEFAULT 'False');")
+    db.execute("CREATE TABLE usersScores (userId INTEGER NOT NULL, tableName INTEGER NOT NULL, usersGroup INTEGER NOT NULL, NumberOfvokabularies INTEGER NOT NULL, usersCorrectVokabularies INTEGER NOT NULL, usersTries INTEGER NOT NULL DEFAULT 0, AlreadyDid TEXT NOT NULL DEFAULT 'False');")
     return  redirect("/")
