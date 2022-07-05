@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}'" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/btn_style.css')}}">
+    <title>Login</title>
+</head>
+
+<body>
+    <form action = "/reset-password" method="post">
+        <h3 align="center" style="color:white;">Reset Password Request</h3>
+        <label for="que"  style="color:white;">Email</label>
+        <input 
+        type="text" 
+        class="form-control" 
+        name="email"
+        required="required"
+        placeholder="Enter Email"
+        />
+        <br />
+        <button type="submit" class="neon-button">Submit</button>
+    </form>
+</body>
+{% endblock %}

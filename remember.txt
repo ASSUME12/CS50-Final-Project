@@ -4,3 +4,5 @@ Database:
 - CREATE TABLE joinGroupQueue (queueID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userUsername INTEGER NOT NULL UNIQUE, groupToJoin INTEGER NOT NULL);
 - CREATE TABLE notifications (notificationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userId INTEGER NOT NULL, notificationTitle TEXT NOT NULL, notification TEXT NOT NULL, dateTime DATETIME, AlreadyRead TEXT NOT NULL DEFAULT 'False');
 - CREATE TABLE usersScores (userId INTEGER NOT NULL, tableName INTEGER NOT NULL, usersGroup INTEGER NOT NULL, NumberOfvokabularies INTEGER NOT NULL, usersCorrectVokabularies INTEGER NOT NULL, usersTries INTEGER NOT NULL DEFAULT 0, AlreadyDid TEXT NOT NULL DEFAULT 'False');
+- CREATE TABLE tokens (email TEXT NOT NULL, token TEXT NOT NULL, tokenType TEXT NOT NULL, TimeCreated DATETIME, ExpireTime DATETIME);
+- CREATE TABLE usersTemporaryData (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, token TEXT NOT NULL, TimeCreated DATETIME, ExpireTime DATETIME, username TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL, school TEXT NOT NULL, grade TEXT NOT NULL, profile_pic TEXT NOT NULL, groupNumber INTEGER NOT NULL);

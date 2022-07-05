@@ -5,15 +5,15 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
-
-from helpers import login_required, get_navbar_data
+from helpers import login_required, get_navbar_data, send_mail, get_token
 from random import seed
 from random import randint
 from werkzeug.utils import secure_filename
 import uuid as uuid
 from PIL import Image
-from datetime import datetime
+from datetime import datetime, timedelta
 import git
+from flask_mail import Mail
 now = datetime.now()
 # seed random number generator
 seed(1)
@@ -24,16 +24,27 @@ now = datetime.now()
 # Configure application
 app = Flask(__name__)
 
+
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
+# Configure Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = '587'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+
+mail=Mail(app)
+
+# Configure Uploads
 UPLOAD_FODER = 'static/profile_pics'
 app.config["UPLOAD_FODER"] = UPLOAD_FODER
-Session(app)
 
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///finalProject.db")
@@ -46,7 +57,6 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
-
 
 @app.route("/")
 @login_required
@@ -77,7 +87,11 @@ def index():
 def login():
     """Log user in"""
     # Forget any user_id
-    session.clear()
+    try:
+        if session["user_id"]:    
+            session.clear()
+    except:
+        pass
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         rows = db.execute("SELECT * FROM users WHERE email = ?", request.form.get("email"))
@@ -104,13 +118,21 @@ def login():
 def logout():
     """Log user out"""
     # Forget any user_id
-    session.clear()
+    try:
+        if session["user_id"]:    
+            session.clear()
+    except:
+        pass
     # Redirect user to login form
     return redirect("/")
 
 @app.route("/sign-up", methods=["GET", "POST"])
 def signUp():
-    session.clear()
+    try:
+        if session["user_id"]:    
+            session.clear()
+    except:
+        pass
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         # Ensure username was submitted
@@ -145,16 +167,21 @@ def signUp():
             if request.form.get("select") == "Teacher":
                 group = randint(1,1000)
                 rows = db.execute("SELECT * FROM users WHERE groupNumber = ?", group)
-                while len((db.execute("SELECT * FROM users WHERE groupNumber = ?", group))) == 1:
+                while len((db.execute("SELECT * FROM users WHERE groupNumber = ?", group))) != 0:
                     group = randint(1,1000)
-                db.execute("INSERT INTO users (username, email, password, role, school, grade, profile_pic, groupNumber) VALUES (? , ?, ?, ?, ?, ?, ?, ?);",request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")),request.form.get("select"),request.form.get("school"),request.form.get("class"), "default.jpg", group)
+                ExpireTime = (now + timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')
+                db.execute("INSERT INTO usersTemporaryData (username, email, password, role, school, grade, profile_pic, groupNumber, token, TimeCreated, ExpireTime) VALUES (? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")),request.form.get("select"),request.form.get("school"),request.form.get("class"), "default.jpg", group, get_token(request.form.get("email"), "accouhntConfirmation"), now, ExpireTime)
+                send_mail(request.form.get("email"), "accouhntConfirmation")
+                #db.execute("INSERT INTO users (username, email, password, role, school, grade, profile_pic, groupNumber) VALUES (? , ?, ?, ?, ?, ?, ?, ?);",request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")),request.form.get("select"),request.form.get("school"),request.form.get("class"), "default.jpg", group)
             else:
                 group = request.form.get("groupNumber")
                 row = db.execute("SELECT * FROM users WHERE groupNumber = ?;", int(group))
 
                 if len(row) != 0:
-                    db.execute("INSERT INTO joinGroupQueue (userUsername, groupToJoin) VALUES (?, ?);", request.form.get("username"), group)
-                    db.execute("INSERT INTO users (username, email, password, role, school, grade, profile_pic, groupNumber) VALUES (? , ?, ?, ?, ?, ?, ?, ?);",request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")),request.form.get("select"),request.form.get("school"),request.form.get("class"), "default.jpg", 0)
+                    ExpireTime = (now + timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')
+                    db.execute("INSERT INTO usersTemporaryData (username, email, password, role, school, grade, profile_pic, groupNumber, token, TimeCreated, ExpireTime) VALUES (? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")),request.form.get("select"),request.form.get("school"),request.form.get("class"), "default.jpg", 0, get_token(request.form.get("email"), "accouhntConfirmation"), now, ExpireTime)
+                    send_mail(request.form.get("email"), "accouhntConfirmation")
+                    #db.execute("INSERT INTO users (username, email, password, role, school, grade, profile_pic, groupNumber) VALUES (? , ?, ?, ?, ?, ?, ?, ?);",request.form.get("username"), request.form.get("email"), generate_password_hash(request.form.get("password")),request.form.get("select"),request.form.get("school"),request.form.get("class"), "default.jpg", 0)
                 else:
                     flash('Group Number not found!', 'error')
                     return render_template("signUp.html")
@@ -162,15 +189,90 @@ def signUp():
             # Remember which user has logged in
             rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
 
-            session["user_id"] = rows[0]["id"]
-            flash("Signed up successfully!", category="succes")
+            #session["user_id"] = rows[0]["id"]
+            flash("We sent you a confirmation message with a link to your email. Please confirm that this is your email!", category="info")
             return redirect("/")
 
     return render_template("signUp.html")
             
         # Redirect user to home page
     # User reached route via GET (as by clicking a link or via redirect)
-    
+
+@app.route("/account-confirmation", methods=["GET", "POST"])
+def accouhntConfirmationTemp():
+    pass
+
+@app.route("/account-confirmation/<token>", methods=["GET", "POST"])
+def accouhntConfirmation(token):
+    usertemporaryData = db.execute("SELECT * FROM usersTemporaryData WHERE token = ?;", token)
+
+    if len(usertemporaryData) != 0:
+        db.execute("INSERT INTO users (username, email, password, role, school, grade, profile_pic, groupNumber) VALUES (? , ?, ?, ?, ?, ?, ?, ?);",usertemporaryData[0]["username"], usertemporaryData[0]["email"], usertemporaryData[0]["password"],usertemporaryData[0]["role"],usertemporaryData[0]["school"],usertemporaryData[0]["grade"], "default.jpg", usertemporaryData[0]["groupNumber"])
+        flash("Account confirmed successfully!", category="succes")
+        # session["user_id"] = rows[0]["id"]
+        if usertemporaryData[0]["role"] == "Student":
+             db.execute("INSERT INTO joinGroupQueue (userUsername, groupToJoin) VALUES (?, ?);", usertemporaryData[0]["username"], usertemporaryData[0]["groupNumber"])
+        return redirect("/") 
+    else:
+        flash('That is invalid token or expired. Please try again.', category='error')
+        return redirect("/login")
+
+@app.route("/reset-password", methods=['GET', 'POST'])
+def reset_request():
+    if request.method == 'POST':
+        user = db.execute("SELECT * FROM users WHERE email = ?;",request.form.get("email"))
+        if not request.form.get("email"):
+            flash("must provide email", category="error")
+        elif len(user) == 0:
+            flash('Email not found.', category='error')
+        else:
+            send_mail(user[0]["email"], "resetPassword")
+            flash('Reset request sent successfully!', category='succes')
+            return redirect("/login")
+            
+    return render_template("reset_request.html")
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    tokenRow = db.execute("SELECT * FROM tokens WHERE token = ?;", token)
+
+    if request.method == 'GET':
+        if len(tokenRow) == 0:
+            flash('That is invalid token. Please try again.', category='error')
+            return redirect("/login")
+        else:
+            tokenExpireDate = datetime.strptime(tokenRow[0]["ExpireTime"], '%Y-%m-%d %H:%M:%S')
+
+            if now > tokenExpireDate:
+                flash('That token has been expired. Please try again.', category='error')
+                return redirect("/login")
+            else:
+                return render_template('change_password.html')
+    else:
+        if len(tokenRow) == 0:
+            flash('That is invalid token. Please try again.', category='error')
+            return redirect("/login")
+        else:
+            tokenExpireDate = datetime.strptime(tokenRow[0]["ExpireTime"], '%Y-%m-%d %H:%M:%S')
+
+            result = now < tokenExpireDate
+            if now > tokenExpireDate:
+                flash('That token has been expired. Please try again.', category='error')
+                return redirect("/login")
+            else:
+                password1 = request.form.get("password1")
+                password2 = request.form.get("password2")
+
+                if password1 != password2:
+                    flash('Passwords dont match!', category='error')
+                    return render_template("change_password.html")
+                else:
+                    user = db.execute("SELECT * FROM users WHERE id = ?;", tokenRow[0]["userId"])
+                    db.execute("UPDATE users SET password = ? WHERE id = ?;", generate_password_hash(password1), user[0]["id"])
+                    db.execute("DELETE FROM tokens WHERE userId = ?",user[0]["id"])
+                    flash('Password changed Successfully!', 'succes')
+                    return redirect("/login")
+
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
@@ -380,7 +482,6 @@ def CheckAnswers():
         tries = usersScore[len(usersScore) - 1]["usersTries"] + 1
     else:
         tries = 1
-    print(tries)
     
   #  correctAsnwersCount = usersScore[0]["usersCorrectVokabularies"] + correctAsnwersCount
 
@@ -484,7 +585,6 @@ def requestNewGroup():
     navbar_data = get_navbar_data(session["user_id"])
     return render_template("requestNewGroup.html", loggedIn="True", navbar_data=navbar_data)
 
-
 @app.route('/<username>', methods=['GET', 'POST'])
 @login_required
 def profile_from_others(username):
@@ -508,11 +608,11 @@ def profile_from_others(username):
         navbar_data = get_navbar_data(session["user_id"])
         return render_template('other_user_profile.html', title='Account', image_file=os.path.join(app.config["UPLOAD_FODER"], image_file), username=username, email=email, password=password, role=role, grade=grade,groupNumber=groupNumber, loggedIn="True", navbar_data=navbar_data)
 
-
 @app.route('/getNotificationsNumber', methods=['POST'])
 @login_required
 def getNotificationsNumber():
     if request.method == "POST":
+        
         notificationsNumber = db.execute("SELECT * FROM notifications WHERE userId = ? AND AlreadyRead = ?;",session["user_id"], "False")
 
         notificationsNumber = {"notificationsNumber": len(notificationsNumber)}
@@ -548,7 +648,11 @@ def searchForUsers():
 @app.route('/test', methods=['GET'])
 @login_required
 def test():
-    session.clear()
+    try:
+        if session["user_id"]:    
+            session.clear()
+    except:
+        pass
     db.execute("DROP TABLE users;")
 
     vokabulariesPlace = db.execute("SELECT * FROM vokabulariesPlace;")
@@ -567,3 +671,16 @@ def test():
     db.execute("CREATE TABLE notifications (notificationId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userId INTEGER NOT NULL, notificationTitle TEXT NOT NULL, notification TEXT NOT NULL, dateTime DATETIME, AlreadyRead TEXT NOT NULL DEFAULT 'False');")
     db.execute("CREATE TABLE usersScores (userId INTEGER NOT NULL, tableName INTEGER NOT NULL, usersGroup INTEGER NOT NULL, NumberOfvokabularies INTEGER NOT NULL, usersCorrectVokabularies INTEGER NOT NULL, usersTries INTEGER NOT NULL DEFAULT 0, AlreadyDid TEXT NOT NULL DEFAULT 'False');")
     return  redirect("/")
+
+    # userId = 8
+    # username = db.execute("SELECT * FROM users WHERE id = ?;", int(userId))
+    # #groupNumber = db.execute("SELECT * FROM joinGroupQueue WHERE userUsername = ?;", username[0]["username"])
+    # #db.execute("UPDATE users SET groupNumber = ? WHERE id = ?;", int(groupNumber[0]["groupToJoin"]), int(userID))
+    # db.execute("DELETE FROM joinGroupQueue WHERE userUsername = ?", username[0]["username"])
+
+    # notificationTitle = "Join request declined"
+    # notification = "You were declined to join group " + "138"
+    # formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+    # db.execute("INSERT INTO notifications (userId, notificationTitle, notification, dateTime) VALUES (?, ?, ?, ?);", userId, notificationTitle, notification, formatted_date)
+
+    # return redirect("/ClassMembers")

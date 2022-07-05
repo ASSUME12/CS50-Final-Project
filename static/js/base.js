@@ -1,8 +1,7 @@
 $(document).ready(function(){
 
-
   $("#serchBox").on("input", function(){
-    fetch("http://127.0.0.1:5000/searchForUsers?username=" + $("#serchBox").val(), {method: 'POST', body: 'searchForUsers'}).then(response => response.json()).then(function(usersData){
+    fetch("http://127.0.0.1:8000/searchForUsers?username=" + $("#serchBox").val(), {method: 'POST', body: 'searchForUsers'}).then(response => response.json()).then(function(usersData){
       users = usersData["users"]
 
       var container = document.getElementById("search-scrollbar")
@@ -21,7 +20,7 @@ $(document).ready(function(){
           user_imgDiv.className = "user_img";
           var profile_pic = document.createElement("img");
           profile_pic.src = "/static/profile_pics/" + users[index]["profile_pic"];
-          profile_pic.style.width = "50px";
+          // profile_pic.style.width = "50px";
 
           user_imgDiv.appendChild(profile_pic);
           user_itemDiv.appendChild(user_imgDiv);
@@ -85,7 +84,7 @@ $(document).ready(function(){
 });
 
 
-  fetch("http://127.0.0.1:5000/getNotificationsNumber" , {method: 'POST', body: 'getNotificationsNumber'}).then(response => response.json()).then(function(data){
+  fetch("http://127.0.0.1:8000/getNotificationsNumber" , {method: 'POST', body: 'getNotificationsNumber'}).then(response => response.json()).then(function(data){
     document.getElementById("wrapper").setAttribute('data-value', data["notificationsNumber"]);
     
     if (data["notificationsNumber"] != 0)
@@ -133,7 +132,7 @@ $(document).ready(function(){
       });
     $(".notification_icon .fa-bell").click(function(){
       $(".dropdown").toggleClass("active");
-      fetch('http://127.0.0.1:5000/setnotificationsAlreadyRead' , {method: 'POST', body: 'setnotificationsAlreadyRead'}).then(response => response.json()).then(function(data){
+      fetch('http://127.0.0.1:8000/setnotificationsAlreadyRead' , {method: 'POST', body: 'setnotificationsAlreadyRead'}).then(response => response.json()).then(function(data){
         document.getElementById("wrapper").setAttribute('data-value', data["notificationsNumber"]);
         if ($('.wrapper').hasClass("notifications"))
         {

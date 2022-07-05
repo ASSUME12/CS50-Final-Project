@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
+/* :root {
+    --clr-neon: #0F4C75;
+    --clr-bg: #1B262C;
+}
 
+
+body {
+    min-height: 100vh;
+    background: var(--clr-bg);
+    font-family: "Balsamiq Sans", cursive;
+    color: var(--clr-neon);
+} */
 *
 {
     margin: 0;
@@ -130,6 +141,7 @@
 }
 
 .wrapper.notifications::after{
+    z-index: 50;
     height: 25px;
     width: 25px;
     content: attr(data-value);
@@ -283,6 +295,7 @@
   position: fixed;
   top: 10px;
   right: 140px;
+  z-index: 11;
 }
 
 .search > .textbox {
@@ -378,6 +391,8 @@
 
 .user_img img{
 	border-radius: 50%;
+    width: 50px;
+    height: 50px;
 }
 
 .search-dropdown .user_item .user_info p{
@@ -453,6 +468,13 @@
 }
 
 @media (min-width: 300px) and (max-width: 400px) {
+    .wrapper{
+        z-index: 5;
+    }
+
+    .nav-item{
+        z-index: 6;
+    }
     .search > .textbox {
         width: 122px;
     }  
@@ -504,6 +526,13 @@
     
 } 
 @media (min-width: 400px) and (max-width: 450px) {
+    .wrapper{
+        z-index: 5;
+    }
+
+    .nav-item{
+        z-index: 6;
+    }
     .search > .textbox {
         width: 122px;
     }  
@@ -556,6 +585,13 @@
 } 
 
 @media (min-width: 450px)  and (max-width: 992px){
+    .wrapper{
+        z-index: 5;
+    }
+
+    .nav-item{
+        z-index: 6;
+    }
     .search > .textbox {
         width: 200px;
     }  
@@ -641,14 +677,14 @@
     .user_info span{
         color: #f7f2b2;
         font-weight: 400;
-        font-size: 10px;
+        font-size: 5px;
         display: block;
     }
     
     .user_info a p{
         color: #ff4800;
         font-weight: 400;
-        font-size: 10px;
+        font-size: 5px;
     
         
     }
@@ -657,4 +693,36 @@
         top: 5px;
     }
     
+} 
+
+@media (max-width: 390px){
+
+    .user_info{
+        font-size: 2px;
+    }
+
+    .user_info span{
+        color: #f7f2b2;
+        font-weight: 400;
+        font-size: 10px;
+        display: block;
+    }
+    
+    .user_info a p{
+        color: #ff4800;
+        font-weight: 400;
+        font-size: 1px;
+    
+        
+    }
+
+    .search{
+        top: 5px;
+    }
+    
+    .user_img img{
+        width: 30px;
+        height: 30px;
+        margin-right: 0px;
+    }
 } 

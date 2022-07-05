@@ -83,7 +83,7 @@ body {
 /* Assignment Button */
 .neon-button-Assignment {
     font-size: 2rem;
-    display: inline-block;
+    display: block;
     cursor: pointer;
     text-decoration: none;
     color: var(--clr-neon);
@@ -179,15 +179,7 @@ body {
     float: right;
 }
 
-.email-text {
-    color: rgb(105, 255, 230);
-    margin-left: 30px;
-}
 
-.username-text {
-    margin-top: 20px;
-    margin-left: 30px;
-}
 
 .content-section {
     margin-top: 20px;
@@ -259,7 +251,7 @@ body {
 @media (max-width: 600px) {
     .neon-button-Assignment{
         font-size: 1.5rem;
-        display: inline-block;
+        display: block;
         cursor: pointer;
         text-decoration: none;
         color: var(--clr-neon);
@@ -281,7 +273,7 @@ body {
 @media (min-width: 600px) and (max-width: 800px) {
     .neon-button-Assignment{
         font-size: 1.5rem;
-        display: inline-block;
+        display: block;
         cursor: pointer;
         text-decoration: none;
         color: var(--clr-neon);
@@ -302,7 +294,7 @@ body {
 @media (max-width: 500px) {
     .neon-button-Assignment{
         font-size: 1rem;
-        display: inline-block;
+        display: block;
         cursor: pointer;
         text-decoration: none;
         color: var(--clr-neon);
@@ -324,7 +316,7 @@ body {
 @media (max-width: 300px) {
     .neon-button-Assignment{
         font-size: 0.6rem;
-        display: inline-block;
+        display: block;
         cursor: pointer;
         text-decoration: none;
         color: var(--clr-neon);
@@ -346,7 +338,7 @@ body {
 @media (min-width: 300px) and (max-width: 400px) {
     .neon-button-Assignment{
         font-size: 0.9rem;
-        display: inline-block;
+        display: block;
         cursor: pointer;
         text-decoration: none;
         color: var(--clr-neon);
@@ -363,6 +355,7 @@ body {
         font-size: 2rem;
     }
 }
+
 
 
 
