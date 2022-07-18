@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
-input{
-    width: 45%;
-    margin: 4px 2px;
-    box-sizing: border-box;
-}
+
+
 
 .email-text {
   color: rgb(105, 255, 230);
@@ -17,20 +14,32 @@ input{
 
 
 
-
-
 .lang1{
-    width: 50%;
-    margin: 4px 2px;
-    box-sizing: border-box;
+  width: 45%;
+  margin: 4px 2px;
+  box-sizing: border-box;
 }
 
 .lang2{
-    
-    width: 49%;
-    margin: 4px 2px;
-    box-sizing: border-box;
+  
+  width: 45%;
+  margin: 4px 2px;
+  box-sizing: border-box;
 }
+
+.test-me-input1{
+  width: 45%;
+  margin: 4px 2px;
+  box-sizing: border-box;
+  margin-left: 5%;
+}
+
+.test-me-input2{
+  width: 45%;
+  margin: 4px 2px;
+  box-sizing: border-box;
+}
+
 
 
 
@@ -80,6 +89,7 @@ div.sglspread {
 
 #close_button1_span{
     color: white;
+    font-size: 1.3vw;
 }
 
 

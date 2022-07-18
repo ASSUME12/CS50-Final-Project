@@ -63,11 +63,13 @@ function indexOfVokabularyChanged(numberOfVokabularies)
         var input1 = document.createElement("input");
         input1.id = "lang1" + index + " lang1";
         input1.name = "lang1" + index
+        input1.className = "lang1" + index + " lang1";
         input1.autocomplete = "off";
 
         var input2 = document.createElement("input");
         input2.id = "lang2" + index + " lang2";
         input2.name = "lang2" + index
+        input2.className = "lang2" + index + " lang2";
         input2.autocomplete = "off";
 
         var close_button1 = document.createElement("button");
@@ -91,7 +93,9 @@ function indexOfVokabularyChanged(numberOfVokabularies)
         
 
         vokabularysInputs.appendChild(div1);
+        
     }
+    vokabularysInputs.appendChild(document.createElement("br"))
 }
 
 function removeVokabularyInput(id)

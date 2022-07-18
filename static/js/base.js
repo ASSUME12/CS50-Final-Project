@@ -1,7 +1,8 @@
 $(document).ready(function(){
 
   $("#serchBox").on("input", function(){
-    fetch("http://127.0.0.1:8000/searchForUsers?username=" + $("#serchBox").val(), {method: 'POST', body: 'searchForUsers'}).then(response => response.json()).then(function(usersData){
+    var baseUrl =  window.location.origin;
+    fetch(baseUrl + "/searchForUsers?username=" + $("#serchBox").val(), {method: 'POST', body: 'searchForUsers'}).then(response => response.json()).then(function(usersData){
       users = usersData["users"]
 
       var container = document.getElementById("search-scrollbar")
@@ -83,8 +84,8 @@ $(document).ready(function(){
   });
 });
 
-
-  fetch("http://127.0.0.1:8000/getNotificationsNumber" , {method: 'POST', body: 'getNotificationsNumber'}).then(response => response.json()).then(function(data){
+  var baseUrl =  window.location.origin;
+  fetch(baseUrl + "/getNotificationsNumber" , {method: 'POST', body: 'getNotificationsNumber'}).then(response => response.json()).then(function(data){
     document.getElementById("wrapper").setAttribute('data-value', data["notificationsNumber"]);
     
     if (data["notificationsNumber"] != 0)
@@ -132,7 +133,8 @@ $(document).ready(function(){
       });
     $(".notification_icon .fa-bell").click(function(){
       $(".dropdown").toggleClass("active");
-      fetch('http://127.0.0.1:8000/setnotificationsAlreadyRead' , {method: 'POST', body: 'setnotificationsAlreadyRead'}).then(response => response.json()).then(function(data){
+      var baseUrl =  window.location.origin;
+      fetch(baseUrl + "/setnotificationsAlreadyRead" , {method: 'POST', body: 'setnotificationsAlreadyRead'}).then(response => response.json()).then(function(data){
         document.getElementById("wrapper").setAttribute('data-value', data["notificationsNumber"]);
         if ($('.wrapper').hasClass("notifications"))
         {

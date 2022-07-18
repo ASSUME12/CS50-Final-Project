@@ -52,7 +52,7 @@ function AddVokabulariesInputs()
 
             var input1 = document.createElement("input");
             input1.id = "lang1" + index;
-            input1.className = "lang1" + index + " lang1";
+            input1.className = "lang1" + index + " lang1" + " test-me-input1";
             input1.name = "lang1" + index
             input1.autocomplete = "off";
             var vokablurayFirstLanguage = Vokabularies[index]["firstVokabulary"]
@@ -61,7 +61,7 @@ function AddVokabulariesInputs()
 
             var input2 = document.createElement("input");
             input2.id = "lang2" + index;
-            input2.className = "lang2" + index + " lang2";
+            input2.className = "lang2" + index + " lang2" + " test-me-input2";
             input2.name = "lang2" + index
             input2.autocomplete = "off";
 

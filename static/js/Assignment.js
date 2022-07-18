@@ -1,11 +1,13 @@
 function GoToAssignment(tableName)
 {
-    url = "http://127.0.0.1:8000/TestMe?tableName=" + tableName;
+    var baseUrl =  window.location.origin;
+    url = baseUrl + "/TestMe?tableName=" + tableName;
     window.location.href = url;
 }
 function GoToProgress(tableName)
 {
-    url = "http://127.0.0.1:8000/Progress?tableName=" + tableName;
+    var baseUrl =  window.location.origin;
+    url = baseUrl + "/Progress?tableName=" + tableName;
     window.location.href = url;
 }
 
